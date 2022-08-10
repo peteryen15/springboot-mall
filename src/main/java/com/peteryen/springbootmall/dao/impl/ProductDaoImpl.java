@@ -1,6 +1,5 @@
 package com.peteryen.springbootmall.dao.impl;
 
-import com.peteryen.springbootmall.constant.ProductCategory;
 import com.peteryen.springbootmall.dao.ProductDao;
 import com.peteryen.springbootmall.dto.ProductQueryParams;
 import com.peteryen.springbootmall.dto.ProductRequest;
@@ -41,6 +40,8 @@ public class ProductDaoImpl implements ProductDao {
             sql += " AND product_name LIKE :search";
             map.put("search", "%" + productQueryParams.getSearch() +"%");
         }
+
+        sql += " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
