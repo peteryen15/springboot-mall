@@ -1,5 +1,6 @@
 package com.peteryen.springbootmall.controller;
 
+import com.peteryen.springbootmall.constant.ProductCategory;
 import com.peteryen.springbootmall.dto.ProductRequest;
 import com.peteryen.springbootmall.model.Product;
 import com.peteryen.springbootmall.service.ProductService;
@@ -9,12 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+    ) {
+        List<Product> productList = productService.getProducts(category, search);
+
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
